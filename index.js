@@ -87,3 +87,6 @@ run().catch(console.dir);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+// Vercel-এর জন্য এক্সপোর্ট করা আবশ্যক
+module.exports = app;
