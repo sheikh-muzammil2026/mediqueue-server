@@ -34,6 +34,7 @@ async function run() {
     const database = client.db("MediQueueDB");
     const tutorsCollection = database.collection("MediQueueTutors");
     const bookingsCollection = database.collection("bookings");
+    const newTutorsCollection = database.collection("newTutors");
     
     app.get('/allTutors', async(req, res)=>{
          const cursor = tutorsCollection.find()
@@ -71,9 +72,30 @@ async function run() {
     })
 
 
+    app.post('/MyTutors', async (req, res)=>{
+
+      const newTutors = req.body;
+      const result = await newTutorsCollection.insertOne(newTutors)
+      res.json(result)
+
+    })
+
+      app.get('/MyTutors/:userId', async(req, res)=>{
+         const userId = req.params.userId;
+         const result = await newTutorsCollection.find({userId}).toArray()
+        res.json(result)
+    })
+
+    app.delete('/MyTutors/:tutorId', async(req, res)=>{
+         const tutorId = req.params.tutorId;
+          const query = {_id: new ObjectId(tutorId)}
+         const result = await newTutorsCollection.deleteOne(query)
+        res.json(result)
+    })
+
    
 
-    // await client.db("admin").command({ ping: 1 });
+    await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
@@ -89,4 +111,4 @@ app.listen(port, () => {
 })
 
 // Vercel-এর জন্য এক্সপোর্ট করা আবশ্যক
-module.exports = app;
+// module.exports = app;
