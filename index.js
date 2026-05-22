@@ -29,7 +29,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
    
-    await client.connect();
+    // await client.connect();
 
     const database = client.db("MediQueueDB");
     const tutorsCollection = database.collection("MediQueueTutors");
@@ -94,8 +94,30 @@ async function run() {
     })
 
    
+      app.put('/MyTutors/:tutorId', async (req, res) => {
+            try {
+                const tutorId = req.params.tutorId;
+                const updatedData = req.body; // ফ্রন্টএন্ড থেকে পাঠানো editFormData এখানে আসবে
+                
+                const filter = { _id: new ObjectId(tutorId) };
+                const updateDoc = {
+                    $set: {
+                        name: updatedData.name,
+                        subject: updatedData.subject,
+                        hourlyFee: updatedData.fee, // ফর্মের fee ডেটাবেজের hourlyFee তে সেট হবে
+                        photoUrl: updatedData.image   // ফর্মের image ডেটাবেজের photoUrl এ সেট হবে
+                    },
+                };
 
-    await client.db("admin").command({ ping: 1 });
+                const result = await newTutorsCollection.updateOne(filter, updateDoc);
+                res.send(result);
+            } catch (error) {
+                console.error("Error updating tutor:", error);
+                res.status(500).send({ message: "Internal Server Error" });
+            }
+        });
+
+    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
