@@ -72,6 +72,14 @@ async function run() {
     })
 
 
+    app.delete('/bookedSession/:sessionId', async(req, res)=>{
+         const sessionId = req.params.sessionId;
+        const query = {_id: new ObjectId(sessionId)}
+         const result = await bookingsCollection.deleteOne(query)
+        res.json(result)
+    })
+
+
     app.post('/MyTutors', async (req, res)=>{
 
       const newTutors = req.body;
@@ -97,15 +105,15 @@ async function run() {
       app.put('/MyTutors/:tutorId', async (req, res) => {
             try {
                 const tutorId = req.params.tutorId;
-                const updatedData = req.body; // ফ্রন্টএন্ড থেকে পাঠানো editFormData এখানে আসবে
+                const updatedData = req.body; 
                 
                 const filter = { _id: new ObjectId(tutorId) };
                 const updateDoc = {
                     $set: {
                         name: updatedData.name,
                         subject: updatedData.subject,
-                        hourlyFee: updatedData.fee, // ফর্মের fee ডেটাবেজের hourlyFee তে সেট হবে
-                        photoUrl: updatedData.image   // ফর্মের image ডেটাবেজের photoUrl এ সেট হবে
+                        hourlyFee: updatedData.fee, 
+                        photoUrl: updatedData.image   
                     },
                 };
 
