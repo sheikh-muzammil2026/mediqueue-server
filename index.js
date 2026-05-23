@@ -137,6 +137,7 @@ async function run() {
       const result = await bookingsCollection.find({ userId }).toArray()
       res.json(result)
     })
+    
 
     app.delete('/bookedSession/:sessionId', async (req, res) => {
       const sessionId = req.params.sessionId;
