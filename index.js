@@ -137,7 +137,7 @@ async function run() {
       const result = await bookingsCollection.find({ userId }).toArray()
       res.json(result)
     })
-    
+
 
     app.delete('/bookedSession/:sessionId', async (req, res) => {
       const sessionId = req.params.sessionId;
@@ -151,6 +151,8 @@ async function run() {
       const result = await newTutorsCollection.insertOne(newTutors)
       res.json(result)
     })
+
+    
 
     app.get('/MyTutors/:userId', async (req, res) => {
       const userId = req.params.userId;
